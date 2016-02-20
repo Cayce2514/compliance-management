@@ -27,9 +27,9 @@ platforms :ruby do
     gem 'sqlite3'
   end
 
-#  group :heroku do
-#    gem "pg"
-#  end
+  group :heroku do
+   gem "pg"
+  end
 #
 #  group :staging do
 #    gem "mysql2"

@@ -1,4 +1,5 @@
 require 'authorization'
+require 'bcrypt'
 
 # class to manage user accounts on CMS.  Note that this class is different
 # than the Person class, because not all people responsible for compliance will

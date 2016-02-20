@@ -23,7 +23,11 @@ If RVM is successfully installed, you should setup a Ruby 1.9.3 environment usin
 
     rvm install 1.9.3-p194
 
-After the Ruby version has installed, setup the gemset for GRC using:
+After the Ruby version has installed, make sure you are using it:
+
+    rvm use 1.9.3-p194
+
+Setup the gemset for GRC using:
 
     rvm --create use ruby-1.9.3-p194@grc
 
@@ -40,6 +44,13 @@ Checkout GRC
 GRC is open-source and hosted on Google Code using Git.  You can clone and checkout the project with:
 
     git clone https://code.google.com/p/compliance-management grc
+
+The original master had a .rvmrc that will ask you if you want to trust it.  You may want to rename the file to avoid the issue:
+
+    mv grc/.rvmrc grc/.rvmrc.orig
+
+Now, you can cd into the grc directory to work with it:
+
     cd grc
 
 
@@ -49,6 +60,10 @@ Setup gems
 GRC uses Bundler (`Gemfile` and `Gemfile.lock`) to manage Gems and dependencies.  Install bundler into your GRC gemset using:
 
     gem install bundler
+
+Since the original code is so old, we need to ensure that we're using a compatible rubygems:
+
+    gem update --system 1.8.30
 
 The GRC `Gemfile` references `Gemfile.local`, which you should create with the following template:
 
@@ -61,6 +76,31 @@ The GRC `Gemfile` references `Gemfile.local`, which you should create with the f
         #gem 'autotest'
       end
     end
+
+
+To get up and running quickly and not have to worry about dependencies that you don't need to deal with for a development instance, I recommend that you make a couple of changes.
+
+First, edit Gemfile to comment out heroku, staging and production:
+
+    vi Gemfile
+
+Comment out:
+#  group :heroku do
+#    gem "pg"
+#  end
+#
+#  group :staging do
+#    gem "mysql2"
+#  end
+#
+#  group :production do
+#    gem "mysql2"
+#  end
+
+While you're still in the Gemfile, update the version of the prawn gem to resolve an issue between the current version of prawn and the version of Ruby this is using:
+
+    # set prawn to require 1.3 version
+    gem 'prawn', '~> 1.3.0' # PDF generation
 
 
 And install the gems required for GRC using the command below.  (The `--path=.bundle` is optional, but causes bundler to install gems into the `.bundle` local directory.)
@@ -80,6 +120,17 @@ First, setup your database by copying the provided `config/database.yml.dist` in
     cp config/database.yml{.dist,}
     vi config/database.yml
 
+If you're not going to set up a production environment now, there is no reason to have it in the database.yml.
+
+    vi config/database.yml
+    comment out production lines:
+    #  production:
+    #  adapter: mysql
+    #  database: cms
+    #  username: cms
+    #  password: cms
+    #  host: localhost
+
 Second, there are a few deployment-specific settings in `config/application.rb`.
 
 #### CMS_CONFIG["SECRET_TOKEN"]
@@ -96,7 +147,22 @@ Now that your environment and database are configured, you need to initialize th
 
     bundle exec rake db:schema:load
     bundle exec rake db:seed
+
+There is a bug in the account model.  bcrypt wasn't properly required:
+
+    vi app/model/account.rb
+
+add the line:
+
+    require ‘bcrypt’
+
+Now, you can insert the demo seed for the database:
+
     bundle exec rake demo:seed
+
+And test with the local rails server:
+
+    bundle exec rails server -b 0.0.0.0
 
 ### Setup for testing:
 

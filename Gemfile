@@ -25,17 +25,17 @@ platforms :ruby do
     gem 'sqlite3'
   end
 
-  group :heroku do
-    gem "pg"
-  end
-
-  group :staging do
-    gem "mysql2"
-  end
-
-  group :production do
-    gem "mysql2"
-  end
+#  group :heroku do
+#    gem "pg"
+#  end
+#
+#  group :staging do
+#    gem "mysql2"
+#  end
+#
+#  group :production do
+#    gem "mysql2"
+#  end
 end
 
 platforms :jruby do
@@ -72,7 +72,7 @@ end
 # Used to be pulled in by dm-types
 gem 'bcrypt-ruby'
 
-gem 'prawn' # PDF generation
+gem 'prawn', '~> 1.3.0' # PDF generation
 
 gem 'paper_trail', '~> 2'
 

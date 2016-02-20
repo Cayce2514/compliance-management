@@ -7,6 +7,8 @@ end
 
 RAILS_VERSION = '= 3.2.13'
 
+ruby '2.2.4'
+
 # Fulltext search
 gem 'thinking-sphinx', '~> 2.0.14'
 

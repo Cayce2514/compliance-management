@@ -53,7 +53,7 @@ gem 'encrypted-cookie-store'
 gem 'strict-forgery-protection'
 gem 'authlogic'
 gem 'builder'
-gem 'json', '~> 1.7.7'
+gem 'json', '~> 1.8.0'
 
 gem 'acl9'
 
@@ -87,7 +87,8 @@ group(:development, :test) do
   gem 'spork', '~> 0.9.0.rc'
   # Don't update to ZenTest 4.8.4 because it breaks rubygems
   # https://github.com/seattlerb/zentest/issues/28
-  gem 'ZenTest', '< 4.8.4'
+  # gem 'ZenTest', '< 4.8.4'
+  gem 'ZenTest', '~> 4.9.0'
   gem 'autotest-rails'
   gem 'simplecov', :require => false
   gem 'capybara'
